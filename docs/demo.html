@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>通知汇 · 功能预演台</title>
+<style>
+:root{
+  --brand:#E60012; --bg:#F5F6F8; --card:#FFFFFF; --text:#1A1A1A; --sub:#8A8A8E;
+  --line:#ECECEC;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px}
+.wrap{max-width:860px;margin:0 auto;padding:12px 12px 60px}
+header{background:var(--brand);color:#fff;padding:14px 16px;border-radius:0 0 14px 14px;margin:-12px -12px 14px;display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:17px;margin:0}
+header .tag{font-size:11px;background:rgba(255,255,255,.2);padding:3px 8px;border-radius:10px}
+.panel{background:var(--card);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.panel h2{font-size:15px;margin:0 0 10px;display:flex;align-items:center;gap:6px}
+.panel h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--brand)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{cursor:pointer;border:none;border-radius:10px;padding:8px 12px;font-size:13px;background:#F0F1F3;color:var(--text);transition:.15s}
+button:active{transform:scale(.96)}
+button.primary{background:var(--brand);color:#fff}
+button.ghost{background:#fff;border:1px solid var(--line)}
+button.small{padding:5px 9px;font-size:12px;border-radius:8px}
+input[type=text],select{padding:8px 10px;border:1px solid var(--line);border-radius:10px;font-size:13px;background:#fff;color:var(--text);outline:none}
+input[type=text]{flex:1;min-width:120px}
+label{font-size:13px;color:var(--sub)}
+.sw{position:relative;width:42px;height:24px;background:#DDD;border-radius:12px;cursor:pointer;transition:.2s;flex:none}
+.sw.on{background:#34C759}
+.sw::after{content:"";position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:2px;left:2px;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.sw.on::after{left:20px}
+/* 色板 */
+.swatches{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.swatches i{width:34px;height:34px;border-radius:50%;cursor:pointer;display:block;border:3px solid transparent;transition:.15s}
+.swatches i.sel{border-color:#1A1A1A;transform:scale(1.1)}
+/* 通知卡片 */
+.stats{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--sub);margin-bottom:10px}
+.stats b{color:var(--brand)}
+.noti{background:var(--card);border-radius:14px;padding:12px 14px;margin-bottom:10px;border:3px solid #DDD;position:relative}
+.noti .top{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--sub)}
+.noti .app{font-weight:700;color:var(--text);font-size:13px}
+.noti .chip{color:#fff;font-size:11px;padding:2px 8px;border-radius:9px}
+.noti .time{margin-left:auto}
+.noti .src{display:inline-block;margin-top:6px;font-size:12px;color:var(--brand);background:#FFF0F1;padding:2px 8px;border-radius:8px}
+.noti .title{font-weight:600;margin-top:6px;font-size:15px}
+.noti .text{color:var(--sub);margin-top:2px;font-size:13px;word-break:break-all}
+.noti .block{position:absolute;top:10px;right:10px;font-size:11px;padding:4px 8px;background:#FFF0F1;color:var(--brand);border-radius:8px}
+.noti.unread{border-style:solid}
+.noti .unreadDot{position:absolute;left:-1px;top:-1px;width:10px;height:10px;border-radius:50% 0 50% 0;background:var(--brand)}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#1A1A1A;color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;z-index:99;box-shadow:0 4px 16px rgba(0,0,0,.25);display:none;max-width:88%;text-align:center}
+.badge{font-size:11px;background:#FFF0F1;color:var(--brand);padding:2px 7px;border-radius:8px;margin-left:6px}
+.catRow{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+.catRow:last-child{border:none}
+.catRow .nm{flex:1;font-weight:600}
+.catRow .clr{width:22px;height:22px;border-radius:6px;flex:none}
+.mini{font-size:11px;color:var(--sub)}
+.hint{font-size:12px;color:var(--sub);line-height:1.7;background:#FAFAFB;border-radius:10px;padding:10px;margin-top:8px}
+kbd{background:#F0F1F3;border-radius:5px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>通知汇 · 功能预演台</h1>
+  <span class="tag">Demo 模拟 · 非真实通知</span>
+</header>
+
+<!-- 1. 模拟通知流 -->
+<div class="panel">
+  <h2><span class="dot"></span>① 模拟通知流（点按钮=来一条通知）</h2>
+  <div class="row" id="simBtns"></div>
+  <div class="row" style="margin-top:10px">
+    <button class="ghost small" id="autoBtn">▶ 自动来消息（每3秒）</button>
+    <button class="ghost small" id="markRead">全部标为已读</button>
+    <button class="ghost small" id="clearAll">清空全部</button>
+  </div>
+  <div class="hint">💡 这是<ms>预演台</ms>：用假数据验证「分类、自建分类、来源屏蔽、卡片配色、未读提醒、汇总」在真机上跑起来是什么样。真机上这些通知由系统监听自动抓取。</div>
+</div>
+
+<!-- 2. 自建分类 -->
+<div class="panel">
+  <h2><span class="dot"></span>② 自建分类（把微信+QQ 归到你命名的类）</h2>
+  <div class="row">
+    <input type="text" id="catName" placeholder="分类名，如：家人消息 / 工作群">
+    <div class="swatches" id="swatches" style="margin:0"></div>
+  </div>
+  <div class="row" style="margin-top:8px">
+    <label>字号</label>
+    <select id="catFont">
+      <option value="0">跟随默认</option><option value="1">小</option>
+      <option value="2" selected>标准</option><option value="3">大</option>
+    </select>
+    <label style="margin-left:8px">新消息单独提醒</label>
+    <div class="sw" id="catAlert"></div>
+  </div>
+  <div class="row" style="margin-top:10px" id="catAppBox"></div>
+  <div class="row" style="margin-top:10px">
+    <button class="primary" id="saveCat">保存分类</button>
+    <span class="mini" id="editTip"></span>
+  </div>
+  <div id="catList" style="margin-top:10px"></div>
+</div>
+
+<!-- 3. 屏蔽来源 -->
+<div class="panel">
+  <h2><span class="dot"></span>③ 屏蔽的来源（群 / 好友）</h2>
+  <div id="blockedList"></div>
+  <div class="hint">在下方通知卡片右上角点「🚫 屏蔽」即可把某个群/好友关掉；这里可恢复。</div>
+</div>
+
+<!-- 4. 汇总 -->
+<div class="panel">
+  <h2><span class="dot"></span>④ 汇总（含你自建的分类）</h2>
+  <button class="primary small" id="sumBtn">生成汇总</button>
+  <pre id="sumOut" style="white-space:pre-wrap;font-size:13px;line-height:1.8;margin:10px 0 0;color:var(--text)"></pre>
+</div>
+
+<!-- 5. 通知列表 -->
+<div class="panel" style="background:transparent;box-shadow:none;padding:0">
+  <h2 style="padding:0 4px"><span class="dot"></span>⑤ 通知看板 <span class="badge" id="unreadBadge">未读 0</span></h2>
+  <div class="stats" id="statsBar"></div>
+  <div id="list"></div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= 数据 ================= */
+const BUILTIN = {
+  "验证码":"#E60012","快递":"#0091FF","账单/财务":"#00A86B","聊天/社交":"#7B61FF",
+  "促销":"#FF9500","日程/提醒":"#34C759","新闻":"#5856D6","系统":"#8E8E93","其他":"#8E8E93"
+};
+const PRESETS = ["#E60012","#FF9500","#FFCC00","#34C759","#00A86B","#0091FF","#5856D6","#7B61FF","#FF2D55","#8E8E93","#5AC8FA","#AF52DE"];
+const IM_APPS = {"微信":"com.tencent.mm","QQ":"com.tencent.mobileqq","企业微信":"com.tencent.wework","钉钉":"com.alibaba.android.rimet"};
+let state = load() || { notis:[], cats:[], blocked:[], nextId:1, auto:false, unreadBadge:true };
+function save(){ localStorage.setItem("notifyhub_demo", JSON.stringify(state)); }
+function load(){ try{ return JSON.parse(localStorage.getItem("notifyhub_demo")); }catch(e){ return null; } }
+
+/* ================= 内置分类规则（与 App 一致） ================= */
+function classify(app, title, text){
+  const s = (app+" "+title+" "+text).toLowerCase();
+  const has = re => re.test(s);
+  if (has(/验证码|校验码|动态码|登录码|otp/)) return "验证码";
+  if (has(/快递|顺丰|圆通|中通|申通|韵达|物流|菜鸟|取件|派送|运单|ems/)) return "快递";
+  if (has(/到账|收款|转账|还款|账单|余额|工资|红包|支付成功|扣款|信用卡|分期/)) return "账单/财务";
+  if (has(/点赞|评论|关注|转发|@|新消息|好友|聊天|群/)) return "聊天/社交";
+  if (has(/促销|优惠|折扣|满减|秒杀|双11|618|降价|领券|活动|限时|特价|省钱/)) return "促销";
+  if (has(/会议|日程|提醒|待办|闹钟|课程|预约|签到/)) return "日程/提醒";
+  if (has(/新闻|头条|热点|快讯|要闻|地震|官方通报/)) return "新闻";
+  if (has(/系统|更新|升级|版本|内存|电量|权限|安全|病毒|清理|优化/)) return "系统";
+  return "其他";
+}
+function catOfApp(app){
+  for (const c of state.cats) if (c.apps.includes(app)) return c;
+  return null;
+}
+function colorOf(cat){
+  const c = state.cats.find(x=>x.name===cat);
+  if (c) return c.color;
+  return BUILTIN[cat] || "#8E8E93";
+}
+function isBlocked(app, source){
+  return source && state.blocked.some(b=>b.app===app && b.source===source);
+}
+
+/* ================= 模拟通知 ================= */
+const SAMPLES = [
+  {app:"微信", source:"A群", title:"A群", text:"张三：今晚一起吃饭吗？@所有人"},
+  {app:"微信", source:"B群", title:"B群", text:"李四：周报已发群里，记得看"},
+  {app:"微信", source:"小A", title:"小A", text:"验证码 204817，5分钟内有效"},
+  {app:"微信", source:"家庭群", title:"家庭群", text:"妈：周末回来吃饭吗"},
+  {app:"QQ", source:"老同学群", title:"老同学群", text:"王五：同学聚会定在周六"},
+  {app:"QQ", source:"小B", title:"小B", text:"[图片]"},
+  {app:"支付宝", source:"", title:"转账提醒", text:"你收到一笔转账 ¥200.00"},
+  {app:"淘宝", source:"", title:"订单物流", text:"顺丰速运：你的包裹已到达网点"},
+  {app:"招商银行", source:"", title:"账单提醒", text:"您本期信用卡账单已生成，还款日 10月25日"},
+  {app:"企业微信", source:"项目组", title:"项目组", text:"经理：明天10点评审会，别迟到"},
+  {app:"抖音", source:"", title:"新消息", text:"有3条新的点赞和评论"},
+  {app:"系统更新", source:"", title:"系统更新", text:"新版本已下载，点击安装"},
+  {app:"美团外卖", source:"", title:"红包到账", text:"送你一个满30减8红包，今日有效"}
+];
+
+/* ================= 渲染 ================= */
+const $ = id => document.getElementById(id);
+function toast(msg){
+  const t = $("toast"); t.textContent = msg; t.style.display = "block";
+  clearTimeout(t._h); t._h = setTimeout(()=>t.style.display="none", 2600);
+}
+function fmtTime(ts){
+  const d = new Date(ts);
+  const p = n => String(n).padStart(2,"0");
+  return `${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+}
+function render(){
+  save();
+  renderList(); renderCats(); renderBlocked(); renderSimBtns(); renderCatApps();
+  const unread = state.notis.filter(n=>!n.read).length;
+  $("unreadBadge").textContent = "未读 " + unread;
+  // 分类统计条
+  const st = {};
+  state.notis.forEach(n => st[n.category] = (st[n.category]||0)+1);
+  $("statsBar").innerHTML = Object.keys(st).length
+    ? Object.entries(st).map(([k,v])=>`<span>${k}：<b>${v}</b></span>`).join("")
+    : "<span>暂无数据，点上面的按钮模拟来几条通知</span>";
+}
+function renderSimBtns(){
+  const box = $("simBtns");
+  const seen = [...new Set(SAMPLES.map(s=>s.app))];
+  box.innerHTML = "";
+  seen.forEach(app=>{
+    const b = document.createElement("button");
+    b.className = "small"; b.textContent = app;
+    b.onclick = ()=>{
+      const pool = SAMPLES.filter(s=>s.app===app);
+      push(pool[Math.floor(Math.random()*pool.length)]);
+    };
+    box.appendChild(b);
+  });
+  const b = document.createElement("button");
+  b.className = "small primary"; b.textContent = "随机来一条";
+  b.onclick = ()=> push(SAMPLES[Math.floor(Math.random()*SAMPLES.length)]);
+  box.appendChild(b);
+}
+function push(s){
+  if (isBlocked(s.app, s.source)){ toast(`「${s.app}·${s.source}」已被屏蔽，不入库`); return; }
+  const cc = catOfApp(s.app);
+  const n = {
+    id: state.nextId++, app: s.app, source: s.source || "",
+    title: s.title, text: s.text,
+    category: cc ? cc.name : classify(s.app, s.title, s.text),
+    time: fmtTime(Date.now()), ts: Date.now(), read: false
+  };
+  // 30秒内同内容去重（与 App 一致）
+  const dup = state.notis.some(x=>x.app===n.app && x.title===n.title && x.text===n.text && Date.now()-x.ts<30000);
+  if (dup){ toast("30 秒内重复内容，已去重"); return; }
+  state.notis.unshift(n);
+  if (cc && cc.alert) toast(`🔔 单独提醒【${cc.name}】${n.app}：${n.title}`);
+  render();
+}
+function renderList(){
+  const box = $("list"); box.innerHTML = "";
+  if (!state.notis.length){
+    box.innerHTML = `<div class="panel" style="text-align:center;color:var(--sub);font-size:13px">还没有通知，点上面的按钮来几条试试</div>`;
+    return;
+  }
+  state.notis.forEach(n=>{
+    const c = colorOf(n.category);
+    const fontPx = (()=>{ const cat = state.cats.find(x=>x.name===n.category);
+      return cat && cat.font>0 ? [0,12,14,16][cat.font] : 14; })();
+    const el = document.createElement("div");
+    el.className = "noti" + (n.read ? "" : " unread");
+    el.style.borderColor = c;
+    el.innerHTML = `
+      ${n.read?"":'<i class="unreadDot"></i>'}
+      <div class="top">
+        <span class="app">${esc(n.app)}</span>
+        <span class="chip" style="background:${c}">${esc(n.category)}</span>
+        <span class="time">${n.time}</span>
+      </div>
+      ${n.source?`<span class="src">来自：${esc(n.source)}</span>`:""}
+      <div class="title" style="font-size:${fontPx+1}px">${esc(n.title)}</div>
+      <div class="text" style="font-size:${fontPx}px">${esc(n.text)}</div>
+      ${n.source?`<button class="block">🚫 屏蔽</button>`:""}`;
+    const btn = el.querySelector(".block");
+    if (btn) btn.onclick = ()=>{
+      if (!state.blocked.some(b=>b.app===n.app && b.source===n.source))
+        state.blocked.push({app:n.app, source:n.source});
+      state.notis = state.notis.filter(x=>!(x.app===n.app && x.source===n.source));
+      toast(`已屏蔽「${n.app}·${n.source}」`); render();
+    };
+    el.onclick = e=>{ if (e.target.tagName!=="BUTTON"){ n.read = true; render(); } };
+    box.appendChild(el);
+  });
+}
+function esc(s){ return (s||"").replace(/[&<>"]/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m])); }
+
+/* ================= 自建分类 ================= */
+let editCat = null, selColor = PRESETS[5];
+function renderSwatches(){
+  const box = $("swatches"); box.innerHTML = "";
+  PRESETS.forEach(c=>{
+    const i = document.createElement("i");
+    i.style.background = c;
+    if (c===selColor) i.classList.add("sel");
+    i.onclick = ()=>{ selColor = c; renderSwatches(); };
+    box.appendChild(i);
+  });
+}
+function renderCatApps(){
+  const box = $("catAppBox"); box.innerHTML = "";
+  Object.keys(IM_APPS).forEach(app=>{
+    const b = document.createElement("button");
+    b.className = "small" + (catAppsSel.has(app) ? " primary" : " ghost");
+    b.textContent = app;
+    b.onclick = ()=>{ catAppsSel.has(app) ? catAppsSel.delete(app) : catAppsSel.add(app); renderCatApps(); };
+    box.appendChild(b);
+  });
+}
+let catAppsSel = new Set();
+$("catAlert").onclick = function(){ this.classList.toggle("on"); };
+$("saveCat").onclick = ()=>{
+  const name = $("catName").value.trim();
+  if (!name) return toast("先填分类名");
+  if (BUILTIN[name]) return toast(`「${name}」是内置分类名，换一个`);
+  if (!catAppsSel.size) return toast("至少选一个应用");
+  const cat = { name, color: selColor, font: +$("catFont").value,
+                alert: $("catAlert").classList.contains("on"), apps:[...catAppsSel] };
+  const i = state.cats.findIndex(c=>c.name===name);
+  if (i>=0) state.cats[i] = cat; else state.cats.push(cat);
+  $("catName").value = ""; catAppsSel.clear(); renderCatApps(); render();
+  toast(`已保存分类「${name}」，之后 ${cat.apps.join("、")} 的通知都归这类`);
+};
+function renderCats(){
+  const box = $("catList"); box.innerHTML = "";
+  if (!state.cats.length){
+    box.innerHTML = `<div class="mini">还没有自建分类。试试：命名「家人消息」，勾选 微信+QQ，保存。</div>`;
+    return;
+  }
+  state.cats.forEach(c=>{
+    const row = document.createElement("div");
+    row.className = "catRow";
+    row.innerHTML = `<i class="clr" style="background:${c.color}"></i>
+      <span class="nm">${esc(c.name)}${c.alert?' <span class="badge">🔔单独提醒</span>':''}</span>
+      <span class="mini">${c.apps.join("、")} · ${["","小","标准","大"][c.font]}</span>
+      <button class="small ghost" data-act="edit">编辑</button>
+      <button class="small ghost" data-act="del">删除</button>`;
+    row.querySelector('[data-act=del]').onclick = ()=>{
+      state.cats = state.cats.filter(x=>x.name!==c.name); render(); toast("已删除，相关应用回到内置分类");
+    };
+    row.querySelector('[data-act=edit]').onclick = ()=>{
+      $("catName").value = c.name; selColor = c.color; renderSwatches();
+      $("catFont").value = c.font; $("catAlert").classList.toggle("on", !!c.alert);
+      catAppsSel = new Set(c.apps); renderCatApps();
+      toast("已填入，改完点保存");
+    };
+    box.appendChild(row);
+  });
+  // 内置分类也列一下（说明配色可改）
+  const more = document.createElement("div");
+  more.className = "mini";
+  more.style.marginTop = "8px";
+  more.innerHTML = "内置分类（默认配色）：" + Object.entries(BUILTIN)
+    .map(([k,v])=>`${k}<i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${v};margin:0 4px 0 6px;vertical-align:-1px"></i>`).join("");
+  box.appendChild(more);
+}
+
+/* ================= 屏蔽来源 ================= */
+function renderBlocked(){
+  const box = $("blockedList"); box.innerHTML = "";
+  if (!state.blocked.length){
+    box.innerHTML = `<div class="mini">暂无。真机上在通知卡片右上角「🚫 屏蔽」即可关掉某个群/好友。</div>`;
+    return;
+  }
+  state.blocked.forEach((b,i)=>{
+    const row = document.createElement("div");
+    row.className = "catRow";
+    row.innerHTML = `<span class="nm">${esc(b.app)} · ${esc(b.source)}</span>
+      <button class="small ghost">恢复接收</button>`;
+    row.querySelector("button").onclick = ()=>{
+      state.blocked.splice(i,1); render(); toast(`已恢复「${b.source}」`);
+    };
+    box.appendChild(row);
+  });
+}
+
+/* ================= 汇总 ================= */
+$("sumBtn").onclick = ()=>{
+  if (!state.notis.length) return toast("还没有通知可汇总");
+  const st = {};
+  state.notis.forEach(n => st[n.category] = (st[n.category]||0)+1);
+  const src = {};
+  state.notis.forEach(n => { if (n.source) src[`${n.app}·${n.source}`] = (src[`${n.app}·${n.source}`]||0)+1; });
+  let s = `共 ${state.notis.length} 条，未读 ${state.notis.filter(n=>!n.read).length} 条\n\n【按分类】\n`;
+  Object.entries(st).forEach(([k,v])=> s += `· ${k}：${v} 条\n`);
+  s += `\n【按来源】\n`;
+  Object.entries(src).forEach(([k,v])=> s += `· ${k}：${v} 条\n`);
+  s += `\n【已屏蔽】${state.blocked.length ? state.blocked.map(b=>`${b.app}·${b.source}`).join("、") : "无"}`;
+  $("sumOut").textContent = s;
+  toast("汇总已生成（含自建分类名）");
+};
+
+/* ================= 其他 ================= */
+$("markRead").onclick = ()=>{ state.notis.forEach(n=>n.read=true); render(); toast("已全部标为已读"); };
+$("clearAll").onclick = ()=>{ state.notis=[]; render(); toast("已清空"); };
+$("autoBtn").onclick = function(){
+  state.auto = !state.auto;
+  this.textContent = state.auto ? "⏸ 停止自动来消息" : "▶ 自动来消息（每3秒）";
+  this.className = state.auto ? "small primary" : "small ghost";
+  if (state.auto){
+    state._timer = setInterval(()=> push(SAMPLES[Math.floor(Math.random()*SAMPLES.length)]), 3000);
+  } else clearInterval(state._timer);
+};
+// 未读提醒模拟（App 里是定时弹通知）
+setInterval(()=>{
+  const unread = state.notis.filter(n=>!n.read).length;
+  if (unread > 0 && state.unreadBadge) toast(`🔔 你有 ${unread} 条未查看的通知`);
+}, 15000);
+
+/* ================= 启动 ================= */
+renderSwatches(); renderCatApps(); render();
+</script>
+</body>
+</html>

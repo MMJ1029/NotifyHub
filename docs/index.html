@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>通知汇 App 下载</title>
+  <style>
+    :root { --brand:#E60012; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+           background:#F5F6F8; color:#1A1A1A; -webkit-text-size-adjust:100%; }
+    .wrap { max-width:520px; margin:0 auto; padding:28px 20px 48px; }
+    .head { background:var(--brand); color:#fff; border-radius:18px; padding:26px 22px; }
+    .head h1 { margin:0 0 6px; font-size:24px; }
+    .head p { margin:0; opacity:.92; font-size:14px; line-height:1.5; }
+    .card { background:#fff; border-radius:16px; padding:22px; margin-top:18px;
+            box-shadow:0 2px 14px rgba(0,0,0,.05); }
+    .btn { display:block; text-align:center; background:var(--brand); color:#fff;
+           text-decoration:none; font-size:17px; font-weight:600; padding:16px;
+           border-radius:12px; margin:6px 0 14px; }
+    .btn:active { opacity:.85; }
+    .btn.alt { background:#fff; color:var(--brand); border:1.5px solid var(--brand); }
+    .small { font-size:13px; color:#8A8A8E; line-height:1.7; }
+    .small b { color:#1A1A1A; }
+    code { background:#F0F0F2; padding:1px 6px; border-radius:5px; font-size:12px; }
+    .note { background:#E8F5E9; border-left:4px solid #34C759; padding:12px 14px;
+            border-radius:8px; font-size:13px; color:#1b5e20; line-height:1.6; margin-top:14px; }
+    .steps { counter-reset:s; }
+    .steps li { list-style:none; position:relative; padding:6px 0 6px 30px; font-size:14px; line-height:1.6; }
+    .steps li:before { counter-increment:s; content:counter(s); position:absolute; left:0; top:6px;
+            width:20px; height:20px; background:var(--brand); color:#fff; border-radius:50%;
+            text-align:center; font-size:12px; line-height:20px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="head">
+      <h1>通知汇 · 下载</h1>
+      <p>把手机通知聚合、分类、汇总；可自建分类、自定义卡片颜色/字体、单独提醒、未读提醒</p>
+    </div>
+
+    <div class="card">
+      <a class="btn" href="./notifyhub-v1.3.apk" download>⬇ 下载安装包（notifyhub-v1.3.apk · v1.3）</a>
+      <a class="btn alt" href="./demo.html">🧪 打开功能预演台（不用安装，先看效果）</a>
+      <div class="small">
+        已为你编译好 <b>新版 v1.3</b>，点一下直接下载。安装即可用，无需任何配置。
+      </div>
+      <div class="note">
+        ✅ 这是<b>可以直接安装的 App</b>（原生安卓 apk）。若你之前装过旧版，<b>直接覆盖安装即可，无需卸载，数据保留</b>（设置、分类、屏蔽列表都在）。<br>
+        📦 安装包文件名带版本号（如 <code>notifyhub-v1.3.apk</code>）——每次出新版都会用新文件名，保证你下载到的是最新版，不会拿到缓存里的旧文件。
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="small" style="margin-bottom:8px"><b>新版能做什么：</b></div>
+      <div class="small" style="line-height:2">
+        🛠️ <b>v1.3 重大修复</b>：修复「通知使用权已开、却一条通知都收不到」的 bug（系统无法绑定监听服务）<br>
+        🔧 <b>真我机专属修复</b>：授权后系统不自动连接时，自动强制重连；首页状态卡实时显示真实连接状态<br>
+        🎨 <b>自定义卡片颜色</b>：每个分类的卡片框颜色随你挑<br>
+        🔤 <b>自定义字体</b>：大小 / 等宽 / 衬线，随你选<br>
+        🗂️ <b>自建分类</b>：把 微信+QQ 等任意应用归到你命名的类<br>
+        🔔 <b>单独提醒</b>：指定分类的新消息立刻单独弹提醒<br>
+        ✨ <b>汇总显示你的分类</b>：一键汇总里出现你命名的分类<br>
+        🔕 <b>未读提醒</b>：有没查看的通知，按间隔提醒你<br>
+        🧩 <b>消息按来源细分</b>：微信 A群 / B群 / 小A 分开显示，可单独屏蔽某个群/好友
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="small" style="margin-bottom:6px"><b>装到真我手机三步：</b></div>
+      <ol class="steps">
+        <li>点上方按钮下载 <code>notifyhub-v1.3.apk</code>（手机浏览器可能提示"下载完成"）。</li>
+        <li>点通知栏里的下载文件，或在"文件管理"里找到它，点安装。<b>已装过旧版会直接覆盖安装，不用卸载</b>。<br>
+            真我会拦"未知来源"：弹窗点「设置」→ 允许该来源，或
+            设置 → 密码与安全 → 系统安全 → 安装未知应用 → 允许对应浏览器。</li>
+        <li>打开「通知汇」→ 开启<b>通知访问权限</b>（真我路径：设置 → 通知 → 更多通知设置 → 通知使用权）。<br>
+            ⚠️ <b>如果首页状态卡显示"服务没连上"</b>：到 设置 → 通知 → 通知使用权，把「通知汇」<b>关掉再打开一次</b>，App 会自动重连。</li>
+        <li>首次打开若弹出「允许后台运行」，请点<b>去允许</b>；并到 手机管家 → 应用 → 通知汇 开启<b>自启动</b>（真我机锁屏杀后台，不然可能收不到新通知）。</li>
+        <li>点首页右上角 <b>＋（分类）</b>：新建分类、把微信/QQ 等归到一起、选颜色/字体、开单独提醒；点<b>设置</b>改字体、开未读提醒、管理已屏蔽的群/好友。</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <a class="btn alt" href="./notifyhub-android.zip" download>下载源码包（zip，可选）</a>
+      <div class="small">
+        想自己改或重新编译？可下载完整工程源码（含一键编译配置）。普通使用无需下载这个。
+      </div>
+    </div>
+  </div>
+</body>
+</html>
