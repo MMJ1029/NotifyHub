@@ -10,7 +10,8 @@
 ![Language](https://img.shields.io/badge/language-Kotlin-purple)
 
 - 语言 / Language：中文（[English abstract](#english) below）
-- 在线演示（无需安装）：[功能预演台](docs/demo.html)
+- 🚀 **在线下载页**（推荐）：<https://mmj1029.github.io/NotifyHub/>
+- 🧪 **在线演示**（无需安装）：<https://mmj1029.github.io/NotifyHub/demo.html>
 
 ---
 
@@ -38,10 +39,10 @@
 
 | 版本 | 说明 |
 | --- | --- |
-| [notifyhub-v1.3.apk](docs/notifyhub-v1.3.apk) | ✅ 最新版（推荐） |
-| [notifyhub-v1.2.apk](docs/notifyhub-v1.2.apk) | 旧版（历史保留） |
+| [notifyhub-v1.3.apk](https://mmj1029.github.io/NotifyHub/notifyhub-v1.3.apk) | ✅ 最新版（推荐） |
+| [notifyhub-v1.2.apk](https://mmj1029.github.io/NotifyHub/notifyhub-v1.2.apk) | 旧版（历史保留） |
 
-也可以在仓库的 **Releases** 页面下载。
+也可以在 [Releases 页面](https://github.com/MMJ1029/NotifyHub/releases) 下载（带版本更新日志）。
 
 > v1.3 重大修复：解决「通知使用权已开、却一条通知都收不到」的 bug；并针对真我（ColorOS）机型加入授权后自动重连。
 
@@ -138,6 +139,6 @@ NotifyHub/
 
 **NotifyHub** is a privacy-first Android notification aggregator. It captures system notifications locally, filters them by app, auto-categorizes them (OTP / delivery / finance / social / promo / schedule / news / system), and lets you build custom categories with custom colors & fonts, per-category alerts, unread reminders, and per-source muting (mute a single group chat or friend). All data stays in the phone's local SQLite database — **nothing is uploaded**.
 
-- **Download**: see `docs/notifyhub-v1.3.apk` or [Releases](https://github.com/MMJ1029/NotifyHub/releases).
-- **Try online** (no install): `docs/demo.html`.
+- **Download**: [Releases](https://github.com/MMJ1029/NotifyHub/releases) or <https://mmj1029.github.io/NotifyHub/>.
+- **Try online** (no install): <https://mmj1029.github.io/NotifyHub/demo.html>.
 - **Stack**: Kotlin · minSdk 24 · targetSdk 34 · `NotificationListenerService`.
